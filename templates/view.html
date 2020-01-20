@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="static/css/general.css">
+
+
+    <title>View</title>
+</head>
+<body class="text-light bg-dark">
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand" href="/">Mu2e</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="dropdown" id="dropdownMenuButton">Add</a>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="\addDMB">DMB</a>
+                    <a class="dropdown-item" href="#">AMB (Cal)</a>
+                    <a class="dropdown-item" href="#">AMB (HV)</a>
+                    <a class="dropdown-item" href="#">Preamp</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="search">Search</a>
+            </li>
+        </ul>
+    </div>
+    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+        <ul class="navbar-nav ml-auto">
+            <li>
+                <a class="nav-link navbar-right" href="logout">Logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<br><br>
+<h1 class="text-center">DMB #{{ dmb.index }}</h1> <br>
+<!--<div class="d-flex justify-content-center">-->
+<!--    <img src="/static/images/dmb.jpg" class="rounded" width="450">-->
+<!--</div>-->
+
+<div class="ml-5">
+    {% if dmb.chipID %}
+    <h4><u>Chip ID:</u>&emsp;{{ dmb.chipID }}</h4>
+    {% else %}
+    <h4><u>Chip ID:</u>&emsp;None</h4>
+    {% endif %}
+</div>
+<br>
+<div class="ml-5">
+    {% if dmb.panelNum %}
+    <h4><u>Panel:</u>&emsp;{{ dmb.panelNum }}</h4>
+    {% else %}
+    <h4><u>Panel:</u>&emsp;None</h4>
+    {% endif %}
+</div>
+
+
+<br>
+<h4 class="ml-5"><u>LDO Voltages</u></h4>
+<div class="d-flex justify-content-start ml-5">
+    <table class="table table-bordered table-dark text-light w-auto">
+        <thead class="bg-primary">
+        <tr>
+        <td scope="col" class="text-center font-weight-bold">1.87 Va</td>
+        <td scope="col" class="text-center font-weight-bold">1.87 V</td>
+        <td scope="col" class="text-center font-weight-bold">2.61 V</td>
+        <td scope="col" class="text-center font-weight-bold">4.9 V</td>
+        <td scope="col" class="text-center font-weight-bold">3.38 V</td>
+        <td scope="col" class="text-center font-weight-bold">1.07 V</td>
+        </tr>
+        </thead>
+        <tbody class="bg-light text-dark">
+        <tr>
+
+        </tr>
+        <tr>
+            {% if dmb.ldo %}
+                {% with lst = dmb.ldo.split("  ") %}
+                    {% for num in lst %}
+                        <td scope="row" class="text-center font-weight-bold">{{ num }}</td>
+                    {% endfor %}
+                {% endwith %}
+            {% else %}
+                <td scope="row" class="text-center font-weight-bold">None</td>
+                <td scope="row" class="text-center font-weight-bold">None</td>
+                <td scope="row" class="text-center font-weight-bold">None</td>
+                <td scope="row" class="text-center font-weight-bold">None</td>
+                <td scope="row" class="text-center font-weight-bold">None</td>
+                <td scope="row" class="text-center font-weight-bold">None</td>
+            {% endif %}
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<br><br>
+<h4 class="ml-5"><u>Continuity</u></h4>
+<div class="d-flex justify-content-start ml-5">
+    <table class="table table-bordered table-dark text-light w-auto">
+        <thead class="bg-primary">
+        <tr>
+            <th scope="col" class="text-center">Pins Flagged for Continuity</th>
+        </tr>
+        </thead>
+        <tbody class="bg-light text-dark">
+            <tr>
+                {% if dmb.continuity %}
+                <td scope="row" class="text-center font-weight-bold">{{ dmb.continuity }}</td>
+                {% else %}
+                <td scope="row" class="text-center font-weight-bold">None</td>
+                {% endif %}
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<br><br>
+<h4 class="ml-5"><u>Crosstalk</u></h4>
+<div class="d-flex justify-content-start ml-5" >
+    {% if dmb.crosstalk %}
+    <table class="table table-bordered table-dark w-auto">
+        <thead class="bg-primary">
+        <tr>
+            <th scope="col" class="text-center">Pinged</th>
+            <th scope="col" class="text-center">Flagged</th>
+        </tr>
+        </thead>
+        <tbody class="bg-light text-dark">
+        {% with splitOne = dmb.crosstalk.split(":") %}
+            {% for i in splitOne %}
+                <tr>
+                    {% with splitTwo = i.split("  ") %}
+                        {% for j in splitTwo %}
+                            <td scope="row" class="text-center font-weight-bold">{{ j }}</td>
+                        {% endfor %}
+                    {% endwith %}
+                </tr>
+            {% endfor %}
+        {% endwith %}
+        </tbody>
+    </table>
+    {% else %}
+    <table class="table table-bordered table-dark text-light w-auto">
+        <thead class="bg-primary">
+        <tr>
+            <th scope="col" class="text-center">Pins Flagged for Crosstalk</th>
+        </tr>
+        </thead>
+        <tbody class="bg-light text-dark">
+        <tr>
+            <td scope="row" class="text-center font-weight-bold">None</td>
+        </tr>
+        </tbody>
+    </table>
+    {% endif %}
+</div>
+
+<br>
+<h4 class="ml-5"><u>Notes</u></h4>
+<div class="d-flex justify-content-start ml-5 mb-5">
+    <div class="card h-auto" style="width: 40rem;">
+        <div class="card-body">
+            {% if dmb.notes %}
+            <p class="text-center font-weight-bold text-dark">{{ dmb.notes }}</p>
+            {% else %}
+            <p  class="text-center font-weight-bold text-dark">None</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

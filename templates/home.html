@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <title>Mu2e</title>
+  </head>
+  <body class="text-light bg-dark">
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+      <a class="navbar-brand" href="/">Mu2e</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+              <a class="nav-link" data-toggle="dropdown" id="dropdownMenuButton">Add</a>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="\addDMB">DMB</a>
+                <a class="dropdown-item" href="#">AMB (Cal)</a>
+                <a class="dropdown-item" href="#">AMB (HV)</a>
+                <a class="dropdown-item" href="#">Preamp</a>
+              </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="search">Search</a>
+          </li>
+        </ul>
+      </div>
+      <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+        <ul class="navbar-nav ml-auto">
+          <li>
+            <a class="nav-link navbar-right" href="logout">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <br><br>
+    <h3 class="text-center text-primary">Welcome!</h3>
+    <h4 class="text-center text-primary">Mu2e Tracker Database</h4>
+    <br><br>
+    <div class="d-flex justify-content-center">
+        <div class="text-left mr-5 w-50">
+            This database houses all testing data for Mu2e tracker components: <br><br>
+            <div class="d-flex justify-content-center">
+              <div class="list-group w-50 text-center">
+                <a href="/addDMB" class="list-group-item active">DMB</a>
+                <li class="list-group-item list-group-item-dark">AMB (Cal)</li>
+                <li class="list-group-item list-group-item-dark">AMB (HV)</li>
+                <li class="list-group-item list-group-item-dark">Preamp</li>
+              </div>
+            </div>
+          <br>
+          To add a component to the database,
+          select the component above and insert all available information.
+          Crosstalk and continuity files should be submitted in the order that component pins were tested
+          (multiple files may be added at once). Enter a component index before creating the entry.
+          <br><br>
+          To find data for a particular component, select "Search" in the navigation bar
+          and enter the component index (found on the label). Components may be edited or deleted
+          from the search page.
+          <br><br>
+          This database was made using Python-Flask, Jinja, Bootstrap,
+          and SQLAlchemy for the LBNL branch of Mu2e
+        </div>
+
+        <div class="text-center ml-5 w-auto">
+          <ul class="list-group list-group-flush w-auto ">
+            <li class="list-group-item text-center bg-dark text-light">Recent Logins</li>
+            {% for user in users %}
+              <li class="list-group-item text-center bg-dark text-light">{{user}}</li>
+            {% endfor %}
+          </ul>
+        </div>
+    </div>
+
+    <br><br><br>
+    <div class="d-flex justify-content-around">
+      <div class="d-flex align-items-center">
+        <img src="/static/images/Berkeley.png" width="80" height="80" class="mr-3">
+        <img src="/static/images/lbnl.png" width="120" height="120" class="mr-3 ml-3">
+        <img src="/static/images/Fermilab.png" width="75" height="75" class="ml-3">
+      </div>
+    </div>
+
+
+  </body>
+</html>

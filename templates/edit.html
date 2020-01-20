@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="static/css/general.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+
+
+    <title>Edit</title>
+</head>
+<body class="text-light bg-dark">
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand" href="/">Mu2e</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="dropdown" id="dropdownMenuButton">Add</a>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="\addDMB">DMB</a>
+                    <a class="dropdown-item" href="#">AMB (Cal)</a>
+                    <a class="dropdown-item" href="#">AMB (HV)</a>
+                    <a class="dropdown-item" href="#">Preamp</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/search">Search</a>
+            </li>
+        </ul>
+    </div>
+    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+        <ul class="navbar-nav ml-auto">
+            <li>
+                <a class="nav-link navbar-right" href="logout">Logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<br><br>
+<h1 class="text-center">Edit DMB</h1> <br>
+<form method="POST" action="/editDMB/{{ current.index }}" enctype="multipart/form-data">
+    <div class="d-flex justify-content-center">
+        <div class="d-flex flex-column justify-content-start mr-3">
+            <img src="/static/images/dmb.jpg" class="img-fluid rounded float-right img-fluid" width="400" height="auto">
+            <form method="POST" action="/editDMB/{{ current.index }}">
+                <div class="d-flex justify-content-center mt-4">
+                    <div>
+                        <input class="btn-lg" id="ex1" type="text"
+                               placeholder="Index:&emsp;{{current.index}}" name="index">
+                    </div>
+
+                    <input type="submit" class="btn btn-lg btn-primary" value="Edit DMB" name="dmb">
+                </div>
+                <div class="text-center">
+                    {% with messages = get_flashed_messages(category_filter=["create error"]) %}
+                    {% if messages %}
+                    {% for message in messages %}
+                    <div>
+                        <font size="3" class="text-danger btn btn-lg"> {{ message }} </font>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                    {% endwith %}
+                </div>
+            </form>
+        </div>
+
+
+        <div class="ml-5">
+            <h4>LDO Voltages</h4>
+            <label class="btn btn-lg btn-primary">
+                <input type="file" name="ldo" autocomplete="off">
+            </label>
+            <h4>Continuity/Crosstalk</h4>
+            <label class="btn btn-lg btn-primary">
+                <input type="file" name="cc" multiple="true" autocomplete="off">
+            </label>
+            {% with messages = get_flashed_messages(category_filter=["submit error"]) %}
+            {% if messages %}
+            {% for message in messages %}
+            &nbsp;
+            <font size="3" class="text-danger mt-3"> {{ message }} </font>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+            <div>
+                <input class="btn-lg btn-block mt-4"  type="text" placeholder="ID:&emsp;{{current.chipID}}" name="ID">
+            </div>
+            <div>
+                <input class="btn-lg btn-block mt-4"  type="text" placeholder="Panel:&emsp;{{current.panelNum}}" name="Panel">
+            </div>
+            <div class="form-group">
+                <textarea class="form-control mt-4" name="notes" rows="4" placeholder="Notes:&emsp;{{current.notes}}"></textarea>
+            </div>
+        </div>
+    </div>
+</form>
+<br><br>
+
+<form>
+    <div class="d-flex justify-content-center">
+        <h4>DMB #{{current.index}}</h4>
+    </div>
+    <br>
+    <div class = "d-flex justify-content-center">
+        {% if current == None %}
+        <h3>There are currently no DMBs in the database.</h3>
+        {% else %}
+        <table class="table ml-5 mr-5 text-light">
+            <thead>
+            <tr>
+                <th class="text-center" scope="col">Index</th>
+                <th class="text-center" scope="col">ID</th>
+                <th class="text-center" scope="col">Date</th>
+                <th class="text-center" scope="col">LDO</th>
+                <th class="text-center" scope="col">Continuity</th>
+                <th class="text-center" scope="col">Crosstalk</th>
+                <th class="text-center" scope="col">Panel</th>
+                <th class="text-center" scope="col">Notes</th>
+                <th class="text-center" scope="col">View</th>
+                <th class="text-center" scope="col">Delete</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th class="text-center" scope="row">{{ current.index }}</th>
+
+                {% if not current.chipID or current.chipID == "" %}
+                <td class="text-center" scope="row"></td>
+                {% else %}
+                <td class="text-center" scope="row">{{ current.chipID }}</td>
+                {% endif %}
+
+                <td class="text-center" > {{ current.date.strftime("%b/%d/%Y %H:%M:%S") }} </td>
+
+                {% if not current.ldo %}
+                <td class="text-center" scope="row"></td>
+                {% else %}
+                <td class="text-center" scope="row">
+                    &#10003;
+                </td>
+                {% endif %}
+
+
+                {% if not current.continuity and current.continuity != "" %}
+                <td class="text-center" scope="row"></td>
+                {% elif current.continuity == "" %}
+                <td class="text-success text-center">Pass</td>
+                {% else %}
+                <td class="text-danger text-center">Fail</td>
+                {% endif %}
+
+                {% if not current.crosstalk and current.crosstalk != "" %}
+                <td class="text-center" scope="row"></td>
+                {% elif current.crosstalk == "" %}
+                <td class="text-success text-center">Pass</td>
+                {% else %}
+                <td class="text-danger text-center">Fail</td>
+                {% endif %}
+
+                {% if not current.panelNum %}
+                <td class="text-center" scope="row"></td>
+                {% else %}
+                <td class="text-center" scope="row">{{ current.panelNum }}</td>
+                {% endif %}
+
+                {% if not current.notes %}
+                <td class="text-center" scope="row"></td>
+                {% else %}
+                <td class="text-center" scope="row">
+                    &#10003;
+                </td>
+                {% endif %}
+
+                <td class="text-center" scope="row">
+                    <a href="{{ '\\viewDMB\%s'%current.index | urlencode }}">
+                        <i class="fa fa-eye text-white"></i>
+                    </a>
+                </td>
+                <td class="text-center" scope="row">
+                    <a href="{{ '\\deleteDMB\%s'%current.index | urlencode }}">
+                        <i class="fa fa-trash-o text-white"></i>
+                    </a>
+                </td>
+
+            </tr>
+            </tbody>
+        </table>
+        {% endif %}
+    </div>
+</form>
+</body>
+
+</html>

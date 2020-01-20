@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <title>Search</title>
+</head>
+<body class="text-light bg-dark">
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand" href="/">Mu2e</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="dropdown" id="dropdownMenuButton">Add</a>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="\addDMB">DMB</a>
+                    <a class="dropdown-item" href="#">AMB (Cal)</a>
+                    <a class="dropdown-item" href="#">AMB (HV)</a>
+                    <a class="dropdown-item" href="#">Preamp</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="search">Search</a>
+            </li>
+        </ul>
+    </div>
+    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+        <ul class="navbar-nav ml-auto">
+            <li>
+                <a class="nav-link navbar-right" href="logout">Logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<br><br>
+<h1 class="text-center">Component Search</h1>
+
+<form method="POST" action="/search">
+<br>
+    <div class="d-flex justify-content-center">
+        <div class="dropdown">
+            <button class="btn btn-lg btn-primary dropdown-toggle ml-5" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Sort By
+            </button>
+            <form action="/search">
+                <div class="dropdown-menu" aria-labelledby="dropdownMenu">
+                    <input type="submit" class="dropdown-item" value="Date" name="date">
+                    <input type="submit" class="dropdown-item" value="Component" name="index">
+                </div>
+            </form>
+        </div>
+        <input class="btn-block btn-lg" id="ex1" type="text" placeholder="Index" name="index">
+        <input type="submit" class="btn btn-lg btn-primary mr-5" value="Search" name="search">
+    </div>
+</form>
+<br>
+<form>
+    <br>
+    {% if query == None %}
+    <div class = "d-flex justify-content-center">
+        {% if dmb == None %}
+        <h3>There are currently no DMBs in the database.</h3>
+        {% else %}
+        <table class="table table-bordered ml-5 mr-5 text-light">
+            <thead>
+            <tr>
+                <th class="text-center" scope="col">Index</th>
+                <th class="text-center" scope="col">ID</th>
+                <th class="text-center" scope="col">Date</th>
+                <th class="text-center" scope="col">LDO</th>
+                <th class="text-center" scope="col">Continuity</th>
+                <th class="text-center" scope="col">Crosstalk</th>
+                <th class="text-center" scope="col">Panel</th>
+                <th class="text-center" scope="col">Notes</th>
+                <th class="text-center" scope="col">View</th>
+                <th class="text-center" scope="col">Edit</th>
+                <th class="text-center" scope="col">Delete</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            {% for dmb in dmbs %}
+            <tr>
+                <th class="text-center" scope="row">{{ dmb.index }}</th>
+
+                {% if not dmb.chipID or dmb.chipID == "" %}
+                <td class="text-center" scope="row"></td>
+                {% else %}
+                <td class="text-center" scope="row">{{ dmb.chipID }}</td>
+                {% endif %}
+
+                <td class="text-center" > {{ dmb.date.strftime("%b/%d/%Y %H:%M:%S") }} </td>
+
+                {% if not dmb.ldo %}
+                <td class="text-center" scope="row"></td>
+                {% else %}
+                <td class="text-center" scope="row">
+                    &#10003;
+                </td>
+                {% endif %}
+
+
+                {% if not dmb.continuity and dmb.continuity != "" %}
+                <td class="text-center" scope="row"></td>
+                {% elif dmb.continuity == "" %}
+                <td class="text-success text-center">Pass</td>
+                {% else %}
+                <td class="text-danger text-center">Fail</td>
+                {% endif %}
+
+                {% if not dmb.crosstalk and dmb.crosstalk != "" %}
+                <td class="text-center" scope="row"></td>
+                {% elif dmb.crosstalk == "" %}
+                <td class="text-success text-center">Pass</td>
+                {% else %}
+                <td class="text-danger text-center">Fail</td>
+                {% endif %}
+
+                {% if not dmb.panelNum %}
+                <td class="text-center" scope="row"></td>
+                {% else %}
+                <td class="text-center" scope="row">{{ dmb.panelNum }}</td>
+                {% endif %}
+
+                {% if not dmb.notes %}
+                <td class="text-center" scope="row"></td>
+                {% else %}
+                <td class="text-center" scope="row">
+                    &#10003;
+                </td>
+                {% endif %}
+
+                <td class="text-center" scope="row">
+                    <a href="{{ '\vviewDMB\%s'%dmb.index | urlencode }}">
+                        <i class="fa fa-eye text-white"></i>
+                    </a>
+                </td>
+                <td class="text-center" scope="row">
+                    <a href="{{ '\editDMB\%s'%dmb.index | urlencode }}">
+                        <i class="fa fa-pencil text-white"></i>
+                    </a>
+                </td>
+                <td class="text-center" scope="row">
+                    <a href="{{ '\deleteDMB\%s'%dmb.index | urlencode }}">
+                        <i class="fa fa-trash-o text-white"></i>
+                    </a>
+                </td>
+
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+    </div>
+    {% elif query == False %}
+    <div class="d-flex justify-content-center">
+        <h3>No Component Found</h3>
+    </div>
+    {% else %}
+        <div class = "d-flex justify-content-center">
+            <table class="table table-bordered ml-5 mr-5 text-light">
+                <thead>
+                <tr>
+                    <th class="text-center" scope="col">Index</th>
+                    <th class="text-center" scope="col">ID</th>
+                    <th class="text-center" scope="col">Date</th>
+                    <th class="text-center" scope="col">LDO</th>
+                    <th class="text-center" scope="col">Continuity</th>
+                    <th class="text-center" scope="col">Crosstalk</th>
+                    <th class="text-center" scope="col">Panel</th>
+                    <th class="text-center" scope="col">Notes</th>
+                    <th class="text-center" scope="col">View</th>
+                    <th class="text-center" scope="col">Edit</th>
+                    <th class="text-center" scope="col">Delete</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th class="text-center" scope="row">{{ query.index }}</th>
+
+                    {% if not query.chipID or query.chipID == "" %}
+                    <td class="text-center" scope="row"></td>
+                    {% else %}
+                    <td class="text-center" scope="row">{{ query.chipID }}</td>
+                    {% endif %}
+
+                    <td class="text-center" > {{ query.date.strftime("%b/%d/%Y %H:%M:%S") }} </td>
+
+                    {% if not query.ldo %}
+                    <td class="text-center" scope="row"></td>
+                    {% else %}
+                    <td class="text-center" scope="row">
+                        &#10003;
+                    </td>
+                    {% endif %}
+
+
+                    {% if not query.continuity and query.continuity != "" %}
+                    <td class="text-center" scope="row"></td>
+                    {% elif query.continuity == "" %}
+                    <td class="text-success text-center">Pass</td>
+                    {% else %}
+                    <td class="text-danger text-center">Fail</td>
+                    {% endif %}
+
+                    {% if not query.crosstalk and query.crosstalk != "" %}
+                    <td class="text-center" scope="row"></td>
+                    {% elif query.crosstalk == "" %}
+                    <td class="text-success text-center">Pass</td>
+                    {% else %}
+                    <td class="text-danger text-center">Fail</td>
+                    {% endif %}
+
+                    {% if not query.panelNum %}
+                    <td class="text-center" scope="row"></td>
+                    {% else %}
+                    <td class="text-center" scope="row">{{ query.panelNum }}</td>
+                    {% endif %}
+
+                    {% if not query.notes %}
+                    <td class="text-center" scope="row"></td>
+                    {% else %}
+                    <td class="text-center" scope="row">
+                        &#10003;
+                    </td>
+                    {% endif %}
+
+                    <td class="text-center" scope="row">
+                        <a href="{{ '\vviewDMB\%s'%query.index | urlencode }}">
+                            <i class="fa fa-eye text-white"></i>
+                        </a>
+                    </td>
+                    <td class="text-center" scope="row">
+                        <a href="{{ '\editDMB\%s'%query.index | urlencode }}">
+                            <i class="fa fa-pencil text-white"></i>
+                        </a>
+                    </td>
+                    <td class="text-center" scope="row">
+                        <a href="{{ '\deleteDMB\%s'%query.index | urlencode }}">
+                            <i class="fa fa-trash-o text-white"></i>
+                        </a>
+                    </td>
+
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+</form>
+
+
+
+
+
+</body>
+</html>
