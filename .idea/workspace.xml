@@ -2,27 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a4c7045d-5ea6-4815-9d63-6f7986e7443a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/$PRODUCT_WORKSPACE_FILE$" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Mu2e.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Mu2eDatabase.db" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/manager.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/reader.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/css/general.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/images/Berkeley.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/images/Fermilab.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/images/dmb.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/images/lbnl.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/addDMB.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/delete.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/edit.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/home.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/login.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/search.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/view.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/upload2/DMB_Voltage_Inspection.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mu2eDatabase.db" beforeDir="false" afterPath="$PROJECT_DIR$/Mu2eDatabase.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/reader.py" beforeDir="false" afterPath="$PROJECT_DIR$/reader.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/home.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />

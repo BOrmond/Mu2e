@@ -55,5 +55,8 @@ def read_ldo(index):
                 if row[0] == index:
                     voltages = " ".join(row[1:7])
 
+    for file in files:
+        os.remove(os.path.join(upload_dir, file))
+
     return voltages
 
