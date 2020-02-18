@@ -35,6 +35,7 @@ class DMB(db.Model):
     chipID = db.Column(db.String(80))
     panelNum = db.Column(db.String(80))
     notes = db.Column(db.String(20000))
+    edits = db.Column(db.String(20000))
 
     def __repr__(self):
         cont = self.continuity
@@ -80,7 +81,6 @@ def home():
         return render_template('login.html')
     else:
         recentUsers = User.query.order_by(User.date.desc()).limit(9)
-        print(recentUsers, flush=True)
         return render_template('home.html', users=recentUsers)
 
 
@@ -158,8 +158,12 @@ def addDMB():
             if "notes" in request.form:
                 notes = request.form["notes"]
 
-            dmb = DMB(index=index, date=datetime.now(), continuity=contStr, crosstalk=crossStr,
-                      chipID=chipID, panelNum=panel, notes=notes, ldo=voltages)
+            now = datetime.now()
+            current_user = User.query.order_by(User.date.desc()).first()
+            edit = "Create*" + current_user.name + "*" + now.strftime("%b/%d/%Y %H:%M:%S")
+
+            dmb = DMB(index=index, date=now, continuity=contStr, crosstalk=crossStr,
+                      chipID=chipID, panelNum=panel, notes=notes, ldo=voltages, edits=edit)
             db.session.add(dmb)
             db.session.commit()
 
@@ -175,7 +179,7 @@ def view_dmb(index):
 
 @app.route("/editDMB/<index>", methods=["GET", "POST"])
 def edit_dmb(index):
-
+    tag = ""
     dmb = DMB.query.filter(DMB.index == index).first()
     if request.method == 'POST':
 
@@ -193,6 +197,7 @@ def edit_dmb(index):
                     return redirect(request.url)
                 if index:
                     dmb.index = index
+                    tag += "Index,"
 
             if 'ldo' in request.files:
                 filecount = 0
@@ -208,6 +213,7 @@ def edit_dmb(index):
                         voltages = read_ldo(dmb.index)
                     else:
                         voltages = read_ldo(index)
+                    tag += "Voltages,"
                     dmb.ldo = voltages
 
             if 'cc' in request.files:
@@ -233,25 +239,35 @@ def edit_dmb(index):
 
                     dmb.continuity = contStr
                     dmb.crosstalk = crossStr
+                    tag += "Continuity,Crosstalk,"
 
             if "ID" in request.form:
                 chipID = request.form["ID"]
                 if chipID:
                     dmb.chipID = chipID
+                    tag += "ChipID,"
 
             if "Panel" in request.form:
                 panel = request.form["Panel"]
                 if panel:
                     dmb.panelNum = panel
+                    tag += "Panel,"
 
             if "notes" in request.form:
                 notes = request.form["notes"]
                 if notes:
                     dmb.notes = notes
+                    tag += "Notes,"
+
+            now = datetime.now()
+            dmb.date = now
+
+            current_user = User.query.order_by(User.date.desc()).first()
+            dmb.edits += "<Edit*" + current_user.name + "*" + now.strftime("%b/%d/%Y %H:%M:%S")
 
         db.session.commit()
 
-    return render_template("edit.html", current=dmb)
+    return render_template("edit.html", current=dmb, tag=tag)
 
 
 @app.route("/deleteDMB/<index>", methods=["GET", "POST"])
@@ -271,10 +287,10 @@ def delete_dmb(index):
 def search():
 
     dmbs = DMB.query.order_by(DMB.date.desc()).all()
-    if "date" in request.form:
-        dmbs = DMB.query.order_by(DMB.date).all()
     query = None
-    if "search" in request.form:
+    print(request.form, flush=True)
+    if "search" in request.form or\
+            ("index" in request.form and request.form["index"] != ""):
         index = request.form["index"]
         if index == "":
             query = None
@@ -282,6 +298,9 @@ def search():
             query = DMB.query.filter(DMB.index == index).first()
             if not query:
                 query = False
+
+    if "date" in request.form and request.form["index"] == "":
+        dmbs = DMB.query.order_by(DMB.date).all()
 
     return render_template("search.html", dmbs=dmbs, query=query)
 

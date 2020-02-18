@@ -36,7 +36,7 @@
                 </div>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="search">Search</a>
+                <a class="nav-link" href="\search">Search</a>
             </li>
         </ul>
     </div>
@@ -51,9 +51,6 @@
 
 <br><br>
 <h1 class="text-center">DMB #{{ dmb.index }}</h1> <br>
-<!--<div class="d-flex justify-content-center">-->
-<!--    <img src="/static/images/dmb.jpg" class="rounded" width="450">-->
-<!--</div>-->
 
 <div class="ml-5">
     {% if dmb.chipID %}
@@ -70,7 +67,32 @@
     <h4><u>Panel:</u>&emsp;None</h4>
     {% endif %}
 </div>
-
+<br>
+<div class="text-left ml-5">
+    <h4><u>History</u></h4>
+    <table class="table table-bordered table-dark text-light w-auto">
+        <thead class="bg-primary">
+            <tr>
+                <td scope="col" class="text-center font-weight-bold">Type</td>
+                <td scope="col" class="text-center font-weight-bold">User</td>
+                <td scope="col" class="text-center font-weight-bold">Date</td>
+            </tr>
+        </thead>
+        <tbody class="bg-light text-dark">
+            {% with lst = dmb.edits.split("<") %}
+                {% for i in lst %}
+                    <tr>
+                    {% with cols = i.split("*") %}
+                        {% for j in cols %}
+                            <td scope="col" class="text-center font-weight-bold">{{j}}</td>
+                        {% endfor %}
+                    {% endwith %}
+                    </tr>
+                {% endfor %}
+            {% endwith %}
+        </tbody>
+    </table>
+</div>
 
 <br>
 <h4 class="ml-5"><u>LDO Voltages</u></h4>
@@ -88,11 +110,8 @@
         </thead>
         <tbody class="bg-light text-dark">
         <tr>
-
-        </tr>
-        <tr>
             {% if dmb.ldo %}
-                {% with lst = dmb.ldo.split("  ") %}
+                {% with lst = dmb.ldo.split(" ") %}
                     {% for num in lst %}
                         <td scope="row" class="text-center font-weight-bold">{{ num }}</td>
                     {% endfor %}
