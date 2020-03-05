@@ -111,7 +111,7 @@
         <tbody class="bg-light text-dark">
         <tr>
             {% if dmb.ldo %}
-                {% with lst = dmb.ldo.split(" ") %}
+                {% with lst = dmb.ldo.split("  ") %}
                     {% for num in lst %}
                         <td scope="row" class="text-center font-weight-bold">{{ num }}</td>
                     {% endfor %}

@@ -183,6 +183,7 @@ def edit_dmb(index):
     dmb = DMB.query.filter(DMB.index == index).first()
     if request.method == 'POST':
 
+        # overrideVoltages()
         index, voltages, contStr, crossStr, chipID, panel, notes = None, None, None, None, None, None, None
 
         if 'dmb' in request.form:
@@ -288,7 +289,6 @@ def search():
 
     dmbs = DMB.query.order_by(DMB.date.desc()).all()
     query = None
-    print(request.form, flush=True)
     if "search" in request.form or\
             ("index" in request.form and request.form["index"] != ""):
         index = request.form["index"]
@@ -321,6 +321,14 @@ def urlencode_filter(s):
     s = s.encode('utf8')
     s = quote_plus(s)
     return Markup(s)
+
+# def overrideVoltages():
+#     dmbs = DMB.query.all()
+#     for dmb in dmbs:
+#         voltages = read_ldo(dmb.index)
+#         dmb.ldo = voltages
+#
+#     db.session.commit()
 
 
 def drop_table(table):
